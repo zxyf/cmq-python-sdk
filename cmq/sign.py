@@ -22,13 +22,15 @@ class Sign:
         elif sign_method == 'sha256':
             hashed = hmac.new(self.secretKey, srcStr, hashlib.sha256)            
         return binascii.b2a_base64(hashed.digest())[:-1]
-      
+
+
 def main():
     secretId = 123
     secretKey = 'xxx'
-    params = {'a':1, 'b':2}
+    params = {'a': 1, 'b': 2}
     sign = Sign(secretId, secretKey)
     print sign.make('cmq-gz.api.qcloud.com', '/v2/index.php', params)
 
-if (__name__ == '__main__'):
+
+if __name__ == '__main__':
     main()

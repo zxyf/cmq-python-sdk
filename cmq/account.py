@@ -6,7 +6,9 @@ from queue import Queue
 from cmq.cmq_tool import CMQLogger
 from cmq.topic import Topic
 from cmq.subscription import Subscription
-class Account:
+
+
+class Account(object):
     """
     Account类对象不是线程安全的，如果多线程使用，需要每个线程单独初始化Account类对象
     """
@@ -36,6 +38,7 @@ class Account:
           @sign  sha256 or sha1 
         '''
         self.cmq_client.set_sign_method(sign)
+
     def set_debug(self, debug):
         self.debug = debug
 
@@ -52,7 +55,6 @@ class Account:
         """ 关闭日志打印
         """
         self.cmq_client.close_log()
-
 
     def set_client(self, host, secretId=None, secretKey=None):
         """ 设置访问的url
@@ -169,7 +171,6 @@ class Account:
             next_offset = ""
 
         return (ret_pkg['totalCount'], ret_pkg['topicList'], next_offset)
-
     
     def get_subscription(self, topicName, subscriptionName):
         ''' 获取订阅
@@ -184,14 +185,8 @@ class Account:
         '''
         return Subscription(topicName, subscriptionName, self.cmq_client, self.debug)
     
-    
-    
-
-    
     def debuginfo(self, RequestId):
         if self.debug:
             print "===================DEBUG INFO==================="
             print "RequestId: %s" % RequestId
             print "================================================"
-      
-	

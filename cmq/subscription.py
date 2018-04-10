@@ -6,6 +6,7 @@ import time
 import base64
 from mailcap import subst
 
+
 class Subscription:
     def __init__(self, topicName, subscriptionName, cmq_client, debug=False):
         self.topicName = topicName
@@ -119,9 +120,7 @@ class Subscription:
             'subscriptionName':self.subscriptionName}
         
         self.cmq_client.clear_filterTags(params)
-        
-        
-          
+
     def __resp2meta__(self, subscription_meta, resp):
         if 'topicOwner' in resp.keys():
             subscription_meta.TopicOwner = resp['topicOwner']
@@ -176,23 +175,20 @@ class SubscriptionMeta:
         self.NotifyStrategy = "EXPONENTIAL_DECAY_RETRY"
         self.NotifyContentFormat = "JSON"
         self.FilterTag = []
-        self.CreateTime = 0
-        self.LastModifyTime = 0
+        self.createTime = 0
+        self.lastModifyTime = 0
         self.msgCount = 0     
-        self.bindingKey=[]
+        self.bindingKey = []
+
     def __str__(self):
-        meta_info = {"topicOwner" : self.TopicOwner,
-                     "endpoint" : self.Endpoint,
-                     "protocal" : self.Protocal,
-                     "notifyStrategy" : self.NotifyStrategy,
-                     "notifyContentFormat" : self.NotifyContentFormat,
-                     "filterTag" : self.FilterTag,
-                     "createTime" : time.strftime("%Y/%m/%d %H:%M:%S", time.localtime(self.createTime)),
-                     "lastModifyTime" : time.strftime("%Y/%m/%d %H:%M:%S", time.localtime(self.lastModifyTime)),
-                     "msgCount":self.msgCount,
+        meta_info = {"topicOwner": self.TopicOwner,
+                     "endpoint": self.Endpoint,
+                     "protocal": self.Protocal,
+                     "notifyStrategy": self.NotifyStrategy,
+                     "notifyContentFormat": self.NotifyContentFormat,
+                     "filterTag": self.FilterTag,
+                     "createTime": time.strftime("%Y/%m/%d %H:%M:%S", time.localtime(self.createTime)),
+                     "lastModifyTime": time.strftime("%Y/%m/%d %H:%M:%S", time.localtime(self.lastModifyTime)),
+                     "msgCount": self.msgCount,
                      "bindingKey": self.bindingKey,}
         return "\n".join(["%s: %s" % (k.ljust(30), v) for k, v in meta_info.items()])
-
-
-    
-    

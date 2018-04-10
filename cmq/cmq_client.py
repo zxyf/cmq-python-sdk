@@ -14,7 +14,8 @@ import sys
 
 URISEC = '/v2/index.php'
 
-class CMQClient:
+
+class CMQClient(object):
     def __init__(self, host, secretId, secretKey, version="SDK_Python_1.3", logger=None):
         self.host, self.is_https = self.process_host(host)
         self.secretId = secretId
@@ -32,6 +33,7 @@ class CMQClient:
         method: POST OR GET
         """
         self.method = method.upper()
+
     def set_sign_method(self, sign_method='sha1'):
         '''
         @function : set sign method , and current support sha1 and sha256 method 
@@ -124,8 +126,8 @@ class CMQClient:
         self.build_req_inter(action, params, req_inter)
 
         # send request
-        if None != params.get('UserpollingWaitSeconds'):
-	    UserTimeout = params.get('UserpollingWaitSeconds')
+        if params.get('UserpollingWaitSeconds'):
+            UserTimeout = params.get('UserpollingWaitSeconds')
         resp_inter = self.http.send_request(req_inter, UserTimeout)
 
         # handle result, make response
@@ -171,7 +173,6 @@ class CMQClient:
             self.logger.debug("RewindQueue RequestId:%s QueueName:%s" % \
                 (ret['requestId'], params['queueName']))
 
-
     def set_queue_attributes(self, params):
         resp_inter = self.request('SetQueueAttributes', params)
         self.check_status(resp_inter)
@@ -179,8 +180,7 @@ class CMQClient:
         ret = json.loads(resp_inter.data)
         if self.logger:
             self.logger.debug("SetQueueAttributes RequestId:%s QueueName:%s" % \
-                (ret['requestId'], params['queueName']))
-
+                              (ret['requestId'], params['queueName']))
 
     def get_queue_attributes(self, params):
         resp_inter = self.request('GetQueueAttributes', params)
@@ -244,8 +244,7 @@ class CMQClient:
         ret = json.loads(resp_inter.data)
         if self.logger:
             self.logger.debug("DeleteMessage RequestId:%s QueueName:%s ReceiptHandle:%s" % \
-                (ret['requestId'], params['queueName'], params['receiptHandle']))
-
+                              (ret['requestId'], params['queueName'], params['receiptHandle']))
 
     def batch_delete_message(self, params):
         resp_inter = self.request('BatchDeleteMessage', params)
@@ -284,7 +283,6 @@ class CMQClient:
             self.logger.debug("ListTopic RequestId:%s TopicTotalCount:%d" % (ret['requestId'], ret['totalCount']))
         return ret
 
-
     def set_topic_attributes(self, params):
         resp_inter = self.request('SetTopicAttributes', params)
         self.check_status(resp_inter)
@@ -292,8 +290,7 @@ class CMQClient:
         ret = json.loads(resp_inter.data)
         if self.logger:
             self.logger.debug("SetTopicAttributes RequestId:%s TopicName:%s" % \
-                (ret['requestId'], params['topicName']))
-
+                              (ret['requestId'], params['topicName']))
 
     def get_topic_attributes(self, params):
         resp_inter = self.request('GetTopicAttributes', params)
@@ -302,7 +299,7 @@ class CMQClient:
         ret = json.loads(resp_inter.data)
         if self.logger:
             self.logger.debug("GetTopicAttributes RequestId:%s TopicName:%s" % \
-                (ret['requestId'], params['topicName']))
+                              (ret['requestId'], params['topicName']))
         return ret  
 
     def publish_message(self, params):
@@ -324,7 +321,8 @@ class CMQClient:
             self.logger.debug("BatchPublishMessage RequestId:%s TopicName:%s MessageCount:%s MessageInfo\n%s" % \
                 (ret['requestId'], params['topicName'], len(ret['msgList']), \
                  "\n".join(["MessageId:%s" % (msg['msgId']) for msg in ret['msgList']])))
-        return ret['msgList']  
+        return ret['msgList']
+
 #========================================Subscription operation===========================================#
     def create_subscription(self, params):
         resp_inter = self.request('Subscribe', params)
@@ -353,7 +351,6 @@ class CMQClient:
             self.logger.debug("ClearSubscriptionFilterTags RequestId:%s TopicName:%s" % \
                 (ret['requestId'], params['topicName']))
 
-
     def list_subscription(self, params):
         resp_inter = self.request('ListSubscriptionByTopic', params)
         self.check_status(resp_inter)
@@ -362,7 +359,6 @@ class CMQClient:
         if self.logger:
             self.logger.debug("ListTopic RequestId:%s TopicTotalCount:%d" % (ret['requestId'], ret['totalCount']))
         return ret
-
 
     def set_subscription_attributes(self, params):
         resp_inter = self.request('SetSubscriptionAttributes', params)
@@ -373,7 +369,6 @@ class CMQClient:
             self.logger.debug("Set subscription Attributes RequestId:%s TopicName:%s" % \
                 (ret['requestId'], params['topicName']))
 
-
     def get_subscription_attributes(self, params):
         resp_inter = self.request('GetSubscriptionAttributes', params)
         self.check_status(resp_inter)
@@ -383,6 +378,3 @@ class CMQClient:
             self.logger.debug("GetTopicAttributes RequestId:%s TopicName:%s" % \
                 (ret['requestId'], params['topicName']))
         return ret  
-
-
-

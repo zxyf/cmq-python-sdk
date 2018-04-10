@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+
 class CMQExceptionBase(Exception):
     """
     @type code: int
@@ -23,13 +24,15 @@ class CMQExceptionBase(Exception):
     def __str__(self):
         return "CMQExceptionBase  %s" % (self.get_info())
 
+
 class CMQClientException(CMQExceptionBase):
     def __init__(self, message, code=-1, data={}):
         CMQExceptionBase.__init__(self, message, code, data)
 
     def __str__(self):
         return "CMQClientException  %s" % (self.get_info())
-    
+
+
 class CMQClientNetworkException(CMQClientException):
     """ 网络异常
 
@@ -41,6 +44,7 @@ class CMQClientNetworkException(CMQClientException):
     def __str__(self):
         return "CMQClientNetworkException  %s" % (self.get_info())
 
+
 class CMQClientParameterException(CMQClientException):
     """ 参数格式错误
 
@@ -51,6 +55,7 @@ class CMQClientParameterException(CMQClientException):
 
     def __str__(self):
         return "CMQClientParameterException  %s" % (self.get_info())
+
 
 class CMQServerNetworkException(CMQExceptionBase):
     """ 服务器网络异常
@@ -65,6 +70,7 @@ class CMQServerNetworkException(CMQExceptionBase):
     def __str__(self):
         return "CMQServerNetworkException Status: %s\nHeader: %s\nData: %s\n" % \
             (self.status, "\n".join(["%s: %s" % (k,v) for k,v in self.header.items()]), self.data)
+
 
 class CMQServerException(CMQExceptionBase):
     """ cmq处理异常
@@ -91,8 +97,3 @@ class CMQServerException(CMQExceptionBase):
 
     def __str__(self):
         return "CMQServerException  %s\nRequestID:%s" % (self.get_info(), self.request_id)
-
-
-
-
-

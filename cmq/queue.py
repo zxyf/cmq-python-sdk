@@ -85,8 +85,7 @@ class Queue:
             params['maxMsgHeapNum'] = queue_meta.maxMsgHeapNum
             
         self.cmq_client.set_queue_attributes(params)
-            
-            
+
     def delete(self):
         """ 删除队列
 
@@ -109,9 +108,9 @@ class Queue:
         else:
             msgBody = message.msgBody
         params = {
-            'queueName':self.queue_name,
-            'msgBody':msgBody,
-            'delaySeconds':delayTime,
+            'queueName': self.queue_name,
+            'msgBody': msgBody,
+            'delaySeconds': delayTime,
         }
         msgId = self.cmq_client.send_message(params)
         retmsg = Message()
@@ -146,7 +145,6 @@ class Queue:
             retmsg.msgId = msg['msgId']
             retMessageList.append(retmsg)
         return retMessageList
-    
 
     def receive_message(self, polling_wait_seconds=None):
         """ 消费消息
@@ -235,7 +233,6 @@ class Queue:
             n += 1
         self.cmq_client.batch_delete_message(params)
 
-    
     def __resp2meta__(self, queue_meta, resp):
         if 'queueName' in resp.keys():
             queue_meta.queueName = resp['queueName']
@@ -266,12 +263,14 @@ class Queue:
         if 'delayMsgNum' in resp.keys():
             queue_meta.delayMsgNum = resp['delayMsgNum']
 
+
 class QueueMeta:
     # DEFAULT_MAX_MSG_HEAP_NUM = 30
     DEFAULT_POLLING_WAIT_SECONDS = 0
     DEFAULT_VISIBILITY_TIMEOUT = 30
     DEFAULT_MAX_MSG_SIZE = 65536
     DEFAULT_MSG_RETENTION_SECONDS = 345600
+
     def __init__(self):
         """ 队列属性
             @note: 设置属性
@@ -325,6 +324,7 @@ class QueueMeta:
                      "delayMsgNum":self.delayMsgNum}
         return "\n".join(["%s: %s" % (k.ljust(30), v) for k, v in meta_info.items()])
 
+
 class Message:
     def __init__(self, message_body="", message_tag=[]):
         """ 消息属性
@@ -362,5 +362,3 @@ class Message:
                      "receiptHandle" : self.receiptHandle,
                      "msgTag":self.msgTag}
         return "\n".join(["%s: %s" % (k.ljust(30), v) for k, v in msg_info.items()])
-    
-    

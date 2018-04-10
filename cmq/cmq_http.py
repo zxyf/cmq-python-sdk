@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
 import socket
 from httplib import HTTPConnection, BadStatusLine, HTTPSConnection
 from cmq.cmq_exception import CMQClientNetworkException
+
 
 class CMQHTTPConnection(HTTPConnection):
     def __init__(self, host, port=None, strict=None):
@@ -19,6 +19,7 @@ class CMQHTTPConnection(HTTPConnection):
         self.request_length = 0
         HTTPConnection.request(self, method, url, body, headers)
 
+
 class CMQHTTPSConnection(HTTPSConnection):
     def __init__(self, host, port=None, strict=None):
         HTTPSConnection.__init__(self, host, port, strict=strict)
@@ -32,8 +33,9 @@ class CMQHTTPSConnection(HTTPSConnection):
         self.request_length = 0
         HTTPSConnection.request(self, method, url, body, headers)
 
+
 class CMQHttp:
-    def __init__(self, host, connection_timeout = 10, keep_alive = True, logger=None, is_https=False):
+    def __init__(self, host, connection_timeout=10, keep_alive=True, logger=None, is_https=False):
         if is_https:
             self.conn = CMQHTTPSConnection(host)
         else:
@@ -98,12 +100,13 @@ class CMQHttp:
             if self.logger:
                 self.logger.debug("GetResponse %s" % resp_inter)
             return resp_inter
-        except Exception,e:
+        except Exception as e:
             self.conn.close()
             raise CMQClientNetworkException(str(e))
 
+
 class RequestInternal:
-    def __init__(self, method = "", uri = "", header = None, data = ""):
+    def __init__(self, method="", uri="", header=None, data=""):
         if header == None:
             header = {}
         self.method = method
@@ -115,8 +118,9 @@ class RequestInternal:
         return "Method: %s\nUri: %s\nHeader: %s\nData: %s\n" % \
                 (self.method, self.uri, "\n".join(["%s: %s" % (k,v) for k,v in self.header.items()]), self.data)
 
+
 class ResponseInternal:
-    def __init__(self, status = 0, header = None, data = ""):
+    def __init__(self, status=0, header=None, data=""):
         if header == None:
             header = {}
         self.status = status
