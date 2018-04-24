@@ -4,7 +4,7 @@ PACKAGE = "cmq"
 NAME = "cmqPython"
 DESCRIPTION = "cmq python sdk"
 AUTHOR = "zhongzq"
-VERSION = '0.1'
+VERSION = '0.2'
 
 setup(
     name=NAME,

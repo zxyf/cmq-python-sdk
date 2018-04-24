@@ -60,7 +60,7 @@ class CMQClientParameterException(CMQClientException):
 class CMQServerNetworkException(CMQExceptionBase):
     """ 服务器网络异常
     """
-    def __init__(self, status = 200, header = None, data = ""):
+    def __init__(self, status=200, header=None, data=""):
         if header == None:
             header = {}
         self.status = status
